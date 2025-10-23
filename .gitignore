@@ -1,0 +1,48 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# --- IDE / Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Logs & Cache ---
+*.log
+*.out
+*.bak
+*.tmp
+*.cache
+logs/
+.cache/
+__pycache__/
+
+# --- LangChain / Vector DB / Data ---
+storage/
+data/
+uploads/
+tmp/
+
+# --- Jupyter / Notebooks ---
+*.ipynb_checkpoints/
+
+# --- Build / Distribution ---
+build/
+dist/
+*.egg-info/
+
+# --- Uvicorn reload cache ---
+*.pid
