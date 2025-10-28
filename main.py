@@ -1,8 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()  # Add this at the very top
+# from routes.routes import routers
+from routes.allroutes import routers as rag_routes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from app.routes import rag_routes
 
-app = FastAPI()
+
+app = FastAPI(title="VectorIQ Backend", version="0.1.0")
 
 # CORS setup (adjust in production)
 app.add_middleware(
@@ -12,6 +16,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(rag_routes)
 
 @app.get("/health")
 def health():
@@ -20,4 +25,3 @@ def health():
 @app.get("/")
 def root():
     return {"message": "Welcome to the VectorIQ Backend!"}
-# app.include_router(rag_routes.router)

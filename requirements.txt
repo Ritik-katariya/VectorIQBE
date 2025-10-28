@@ -1,7 +1,20 @@
 fastapi
 uvicorn
-langchain
-langchain-community
+pydantic>=2
+
+langchain>=0.2
+langchain-community>=0.2
+# langchain-unstructured removed - using langchain_community UnstructuredFileLoader instead
+
+pypdf
+pymupdf
+pdfplumber
+unstructured
+python-magic-bin; sys_platform == 'win32'
+python-magic; sys_platform != 'win32'
+
+sentence-transformers
+
 langchain-openai
 openai
 pydantic-settings
