@@ -1,7 +1,7 @@
 from typing import List
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
-from lib.chroma_connection import get_temporary_collection, get_chroma_client, get_permanent_collection
+from lib.chroma_connection import get_temporary_collection, get_chroma_client
 import os
 from dotenv import load_dotenv
 

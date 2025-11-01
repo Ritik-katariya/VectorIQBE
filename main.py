@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 load_dotenv()  # Add this at the very top
-# from routes.routes import routers
 from routes.allroutes import routers as rag_routes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

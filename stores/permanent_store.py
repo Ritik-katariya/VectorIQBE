@@ -1,8 +1,9 @@
 from typing import List, Optional
 from langchain_core.documents import Document
-from langchain_community.vectorstores import Chroma
+
 from langchain_openai import OpenAIEmbeddings
-from lib.chroma_connection import get_permanent_collection, get_chroma_client, get_temporary_collection
+
+from lib.chroma_connection import get_permanent_collection, get_chroma_client
 import os
 from dotenv import load_dotenv
 

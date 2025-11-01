@@ -1,6 +1,6 @@
 from typing import Literal, Optional, Dict, Any, List
 from pydantic import BaseModel
-from langchain_core.documents import Document
+
 
 SourceType = Literal["file", "url", "text"]
 

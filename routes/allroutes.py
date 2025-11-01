@@ -6,6 +6,4 @@ routers = APIRouter()
 # include the data_loader router under a clear prefix
 routers.include_router(data_loader_router)
 
-@routers.get("/test")
-async def test_route():
-    return {"message": "Route is working"}
+

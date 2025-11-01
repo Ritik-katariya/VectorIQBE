@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 import os, tempfile, shutil
 from utils.types import LoadParams, ChunkParams, StoreChoice
 from pipeline.orchestrator import run_pipeline
-
+from typing import Literal
 
 
 router = APIRouter()
@@ -14,7 +14,7 @@ def _save_temp(upload: UploadFile) -> str:
     with open(path, "wb") as f: shutil.copyfileobj(upload.file, f)
     return path
 
-@router.post("/")       
+@router.post("/ingest")
 def ingest(
     # choose exactly one of these:
     file: UploadFile | None = File(None),
@@ -22,7 +22,7 @@ def ingest(
     text: str | None = Form(None),
 
     # hints
-    pdf_strategy: str = Form("auto"),
+    pdf_strategy: Literal["auto", "text", "table"] = "auto",
     sitemap: bool = Form(False),
     source_label: str | None = Form(None),
 

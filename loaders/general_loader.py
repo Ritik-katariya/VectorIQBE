@@ -1,13 +1,12 @@
-import os, io
-from typing import List
-from langchain_core.documents import Document
 
+from langchain_core.documents import Document
+from typing import Literal
 from .strategies.pdf_loader import load_pdf
-from .strategies.image_loader import load_image
+from .strategies.image_loader import  load_image_ocr
 from .strategies.text_loader import load_textlike, load_doclike_unstructured, TEXT_EXTS, DOC_EXTS
 from .strategies.web_loader import load_web_url, load_sitemap
 from .strategies.fallback_loader import load_any
-from utils.detect import sniff_bytes, is_url
+from utils.detect import sniff_bytes
 
 def _read_head(path: str, n: int=12) -> bytes:
     with open(path, "rb") as f:
@@ -20,7 +19,7 @@ def load_to_documents(
     filename: str | None = None,
     url: str | None = None,     # for a single URL or sitemap
     text: str | None = None,    # inline text
-    pdf_strategy: str = "auto",
+    pdf_strategy:Literal["auto", "text", "table"] = "auto",
     sitemap: bool = False,
     source_label: str | None = None,
 ) -> tuple[list[Document], str]:
@@ -53,7 +52,7 @@ def load_to_documents(
         docs = load_pdf(path, pdf_strategy, False)
         strategy = f"pdf:{pdf_strategy}"
     elif ext in {"png","jpg","jpeg","gif","bmp","tiff","webp"}:
-        docs = load_image(path, "elements")
+        docs = load_image_ocr(path)
         strategy = "image"
     elif ext in TEXT_EXTS:
         docs = load_textlike(path)
@@ -69,7 +68,7 @@ def load_to_documents(
             docs = load_pdf(path, pdf_strategy, False)
             strategy = f"pdf:{pdf_strategy}"
         elif kind.startswith("image/"):
-            docs = load_image(path, "elements")
+            docs = load_image_ocr( path)
             strategy = "image"
         else:
             docs = load_any(path)
