@@ -29,3 +29,4 @@ class PipelineResult(BaseModel):
     total_chunks: int
     strategy: str
     sample: List[Dict[str, Any]]
+    ids: List[str]

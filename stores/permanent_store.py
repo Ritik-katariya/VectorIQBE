@@ -1,4 +1,5 @@
 from typing import List, Optional
+import uuid
 from langchain_core.documents import Document
 
 from langchain_openai import OpenAIEmbeddings
@@ -40,10 +41,11 @@ class PermanentVectorStore:
         chunks: List[Document],
         base_collection: str = "knowledge",
         namespace: Optional[str] = None,
-    ) -> str:
+    ) -> list[str]:
         documents = [doc.page_content for doc in chunks]
         metadatas = [{"namespace": namespace, **doc.metadata} for doc in chunks]
-        ids = [f"doc_{i}_{namespace or 'default'}" for i in range(len(chunks))]
+        # Short unique IDs per chunk (12 hex chars) to avoid collisions across ingests
+        ids = [uuid.uuid4().hex[:12] for _ in range(len(chunks))]
         
         embeddings = self.embed.embed_documents(documents)
         
@@ -54,4 +56,4 @@ class PermanentVectorStore:
             metadatas=metadatas,
             ids=ids
         )
-        return collection.name
+        return ids

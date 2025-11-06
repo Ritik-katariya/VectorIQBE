@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from lib.chroma_connection import get_temporary_collection, get_chroma_client
@@ -19,10 +20,11 @@ class SessionStore:
         )
         self.client = get_chroma_client()
 
-    def put(self, session_id: str, chunks: List[Document]) -> None:
+    def put(self, session_id: str, chunks: List[Document]) -> list[str]:
         documents = [doc.page_content for doc in chunks]
         metadatas = [{"session_id": session_id, **doc.metadata} for doc in chunks]
-        ids = [f"temp_{session_id}_{i}" for i in range(len(chunks))]
+        # Short unique IDs per chunk (12 hex chars) to avoid collisions within a session
+        ids = [uuid.uuid4().hex[:12] for _ in range(len(chunks))]
         
         embeddings = self.embed.embed_documents(documents)
         
@@ -33,6 +35,7 @@ class SessionStore:
             metadatas=metadatas,
             ids=ids
         )
+        return ids
 
     def get(self, session_id: str) -> List[Document]:
         collection = get_temporary_collection()

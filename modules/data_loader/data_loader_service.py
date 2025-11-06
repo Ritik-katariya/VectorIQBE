@@ -31,7 +31,7 @@ def ingest(
     chunk_overlap: int = Form(120),
 
     # storage
-    store_mode: str = Form("temporary"),          # "temporary" | "permanent"
+    store_mode: str = Form("permanent"),          # "temporary" | "permanent"
     session_id: str | None = Form(None),
     namespace: str | None = Form(None),
 ):

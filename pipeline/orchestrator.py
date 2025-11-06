@@ -36,17 +36,18 @@ def run_pipeline(load: LoadParams, chunk: ChunkParams, store: StoreChoice) -> Pi
     chunks = chunk_documents(docs, chunk_size=chunk.chunk_size, chunk_overlap=chunk.chunk_overlap)
 
     # 3) Store
+    saved_ids = []
     if store.mode == "temporary":
         assert store.session_id, "session_id required for temporary mode"
         # attach session metadata
         for c in chunks:
             c.metadata.update({"datastore": "temporary", "session_id": store.session_id})
-        _get_temp_store().put(store.session_id, chunks)
+        saved_ids = _get_temp_store().put(store.session_id, chunks)
     else:
         # attach namespace/user/org metadata
         for c in chunks:
             c.metadata.update({"datastore": "permanent", "namespace": store.namespace})
-        collection = _get_perm_store().upsert(chunks, base_collection="knowledge", namespace=store.namespace)
+        saved_ids = _get_perm_store().upsert(chunks, base_collection="knowledge", namespace=store.namespace)
 
     # response sample (no large payloads)
     sample = [{"content": c.page_content[:800], "metadata": c.metadata} for c in chunks[:5]]
@@ -55,4 +56,6 @@ def run_pipeline(load: LoadParams, chunk: ChunkParams, store: StoreChoice) -> Pi
         total_chunks=len(chunks),
         strategy=strategy,
         sample=sample,
+        ids=saved_ids,
+        
     )
