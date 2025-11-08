@@ -46,3 +46,11 @@ dist/
 
 # --- Uvicorn reload cache ---
 *.pid
+
+
+# Ignore Chroma local database
+chroma/
+chromadb.sqlite3
+*.sqlite3
+index/
+manifest.json
